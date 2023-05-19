@@ -6,11 +6,26 @@ class Playlist extends Serializable {
   }
 
   get length() {
-    return Object.keys(this.mediaList).length;
+    return Object.getOwnPropertyNames(this.mediaList).length;
+  }
+
+  // minus excluded ones
+  get effectiveLength() {
+    return Object.getOwnPropertyNames(this.mediaList).filter(x => !CONTEXT.getUMD(x).excluded).length;
+  }
+
+  // minus excluded ones
+  get excludedLength() {
+    return Object.getOwnPropertyNames(this.mediaList).filter(x => CONTEXT.getUMD(x).excluded).length;
+  }
+
+  // returns list of newly added UMDs
+  async populate(query) {
+    throw new Error("Not Implemented");
   }
 
   setMedia(umd) {
-    this.mediaList[umd.uid] = umd;
+    this.mediaList[umd.uid] = 1;
   }
 
   removeMedia(umd) {

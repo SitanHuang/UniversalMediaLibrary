@@ -9,12 +9,12 @@ class Media extends Serializable {
 
   // attempts to materialize Media object with implementation adapter
   // returns true/false
-  search() {
+  async search() {
     throw new Error("Not Implemented");
   }
 
   // actually downloads media
-  sync() {
+  async sync() {
     throw new Error("Not Implemented");
   }
 }

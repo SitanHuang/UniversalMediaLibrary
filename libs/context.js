@@ -2,6 +2,7 @@ const fs = require('fs');
 const fse = require('fs-extra');
 const ini = require('ini');
 
+const UniversalMediaDescriptor = require('./core/umd');
 const Playlist = require('./core/playlist');
 
 const { globSync } = require('glob')
@@ -10,7 +11,7 @@ class UMLContext {
   constructor(path) {
     this.prefix = path;
 
-    this.ums = {};
+    this.umd = {};
     this.playlists = {};
 
 
@@ -28,7 +29,7 @@ class UMLContext {
 
     [
       './data',
-      './data/uml',
+      './data/umds',
       './data/playlists',
       './media',
       './media/youtube',
@@ -47,6 +48,7 @@ class UMLContext {
     this._read_config();
     this._init_dirs();
 
+    this.reloadUMDs();
     this.reloadPlaylists();
     // init all UniversalMediaDescriptors
   }
@@ -71,15 +73,15 @@ class UMLContext {
   }
 
   getUMD(uid) {
-    return this.ums[uid];
+    return this.umd[uid];
   }
 
   setUMD(umd) {
-    return this.ums[umd.uid] = umd;
+    return this.umd[umd.uid] = umd;
   }
 
   removeUMD(umd) {
-    delete this.ums[umd.uid];
+    delete this.umd[umd.uid];
   }
 
   reloadPlaylists() {
@@ -100,6 +102,24 @@ class UMLContext {
     }
   }
 
+  reloadUMDs() {
+    this.umd = {};
+
+    const path = this.path('./data/umds');
+
+    const files = globSync(`${path}/*.json`);
+
+    for (const file of files) {
+      const umd = UniversalMediaDescriptor.fromJSON(fs.readFileSync(file));
+
+      if (!umd.uid?.length) {
+        throw new Error(`${file}: Likely not a valid UMD object!`);
+      }
+
+      this.setUMD(umd);
+    }
+  }
+
   savePlaylists() {
     const path = this.path('./data/playlists/');
 
@@ -110,6 +130,19 @@ class UMLContext {
 
       if (playlist?.name)
         fs.writeFileSync(path + '/' + playlist.gen_fname() + '.json', playlist.toJSON(2));
+    }
+  }
+
+  saveUMDs() {
+    const path = this.path('./data/umds/');
+
+    fse.emptyDirSync(path);
+
+    for (const id in this.umd) {
+      const umd = this.getUMD(id);
+
+      if (umd?.uid)
+        fs.writeFileSync(path + '/' + umd.gen_fname() + '.json', umd.toJSON(2));
     }
   }
 

@@ -1,5 +1,6 @@
 class UniversalMediaDescriptor extends Serializable {
   constructor(uid, title, author) {
+    super();
     // uid should be populated by playlistsource impls
     this.uid = uid;
     this.title = title;
@@ -10,10 +11,16 @@ class UniversalMediaDescriptor extends Serializable {
 
     // stops materialization of Media object
     this.excluded = false;
+
+    // whether at any point in time the physical media
+    // is present on disc from one source
+    //
+    // updated by implementations of Media
+    this.materialized = null;
   }
 
   gen_fname() {
-    return sanitize_fname(`${this.title} - ${this.author}`);
+    return sanitize_fname(`${this.title} - ${this.author} - ${this.uid}`);
   }
 }
 

@@ -20,14 +20,14 @@ function main() {
 if (CONTEXT.isUMLDirectory()) {
   main();
 } else {
-  term('Current directory is not a UML library.\n');
-  term('Do you want to create one? [Y|n]');
+  console.error('Current directory is not a UML library.\n');
+  console.log('Do you want to create one? [Y|n]');
 
   term.yesOrNo({ yes: ['y', 'ENTER'], no: ['n'] }, function (_, result) {
     if (result) {
       term('\n');
       main();
     } else
-      process.exit();
+      process.exit(1);
   });
 }
