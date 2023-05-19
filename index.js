@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 
-require('./core/common');
+require('./libs/core/common');
 require('ini');
 
 const term = require('terminal-kit').terminal;
 
-const argsParser = require('./cli/args');
+const argsParser = require('./libs/cli/args');
 
 
-const UMLContext = require('./context');
+const UMLContext = require('./libs/context');
 
 global.CONTEXT = new UMLContext('./');
 

@@ -3,20 +3,53 @@ const yargs = require('yargs')(process.argv.slice(2));
 yargs
   .scriptName("ulm-manager")
   .usage('$0 <cmd> [args]')
-  // ==================   sync    ==================
+  // ==================  convert   ==================
+  .command({
+    command: 'convert',
+    describe: 'Convert UMD materials to other formats',
+    builder: {
+      playlist: {
+        describe: 'Regex to select playlists to convert',
+        type: 'string',
+        default: '.+'
+      },
+      maxthread: {
+        describe: 'Maximum concurrent ffmpeg instances',
+        type: 'number',
+        default: 6
+      },
+      audio: {
+        describe: 'Whether to copy audio stream',
+        type: 'boolean',
+        default: true
+      },
+      video: {
+        describe: 'Whether to copy video stream',
+        type: 'boolean',
+        default: false
+      },
+      ext: {
+        decribe: 'Extension of converted media file',
+        type: 'string',
+        required: true
+      }
+    },
+    handler: (argv) => require('./handlers/convert')(yargs, argv)
+  })
+  // ==================    sync    ==================
   .command({
     command: 'sync',
     describe: 'Materialize all UMDs',
     builder: {
       maxthread: {
-        describe: 'Maximum concurrent backend instances',
+        describe: 'Maximum concurrent backend (ex. yt-dlp) instances',
         type: 'number',
         default: 24
       }
     },
     handler: (argv) => require('./handlers/sync')(yargs, argv)
   })
-  // ================== playlists ==================
+  // ================== playlists ===================
   .command({
     command: 'playlist',
     describe: 'Manage playlists',
