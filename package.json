@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "command-exists": "^1.2.9",
     "fs-extra": "^11.1.1",
     "glob": "^10.2.5",
     "ini": "^4.1.1",

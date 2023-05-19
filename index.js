@@ -7,13 +7,15 @@ const term = require('terminal-kit').terminal;
 
 const argsParser = require('./libs/cli/args');
 
-
 const UMLContext = require('./libs/context');
 
 global.CONTEXT = new UMLContext('./');
 
-function main() {
+async function main() {
   CONTEXT.init();
+  
+  await require('./libs/cli/check_env')();
+
   argsParser.argv;
 }
 
