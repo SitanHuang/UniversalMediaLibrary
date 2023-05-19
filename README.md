@@ -23,23 +23,23 @@ be converted into desired formats, such as audio-only files.
 
 ```bash
 # Installation
-ln -s abs_path_to/index.js /usr/bin/ulm-manager
+ln -s abs_path_to/index.js /usr/bin/uml
 
 # Create a library at current directory
-ulm-manager
+uml
 
 # Edit uml.ini to verify settings
 
 # Create Playlist
-ulm-manager playlist --add "name"
+uml playlist --add "name"
 # Populate library and playlist with UMDs
 # (use --help for advanced options)
-ulm-manager playlist --populate "name" --query "youtube playlist url" --method "youtube"
+uml playlist --populate "name" --query "youtube playlist url" --method "youtube"
 
 # Materialize all UMDs in the library onto disk
-ulm-manager sync
+uml sync
 
 # Convert media
 # (use --help for advanced options)
-ulm-manager convert --video=false --ext "mp3"
+uml convert --video=false --ext "mp3"
 ```

@@ -1,7 +1,7 @@
 const yargs = require('yargs')(process.argv.slice(2));
 
 yargs
-  .scriptName("ulm-manager")
+  .scriptName("uml")
   .usage('$0 <cmd> [args]')
   // ==================  convert   ==================
   .command({

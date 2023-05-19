@@ -15,24 +15,24 @@
 
 ```bash
 # 安装
-ln -s abs_path_to/index.js /usr/bin/ulm-manager
+ln -s abs_path_to/index.js /usr/bin/uml
 
 # 在当前目录创建一个库
-ulm-manager
+uml
 
 # 编辑 uml.ini 以验证设置
 
 # 创建新的播放列表
-ulm-manager playlist --add "名称"
+uml playlist --add "名称"
 
 # 将UMDs添加到库和播放列表中
 # (使用 --help 查看高级选项)
-ulm-manager playlist --populate "名称" --query "youtube播放列表的url" --method "youtube"
+uml playlist --populate "名称" --query "youtube播放列表的url" --method "youtube"
 
 # 将库中的所有UMD实体化到磁盘上
-ulm-manager sync
+uml sync
 
 # 将媒体文件转换为所需格式
 # (使用 --help 查看高级选项，例如，要转换为仅音频，设置 --video=false)
-ulm-manager convert --video=false --ext "mp3"
+uml convert --video=false --ext "mp3"
 ```
