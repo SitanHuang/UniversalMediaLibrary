@@ -10,11 +10,22 @@ async function handle(yargs, argv) {
     CONTEXT.removePlaylist(argv.remove);
     CONTEXT.savePlaylists();
   } else if (argv.list) {
+    term(`Total unique UMDs: ${Object.values(CONTEXT.umd).filter(x => x?.uid).length}\n\n`);
     let table = [['Name', '# of Media', '# of Excluded', 'Effective #']];
+
+    let tot = ['Total', 0, 0, 0];
 
     Object.values(CONTEXT.playlists).forEach(pl => {
       table.push([pl.name, pl.length, '^R'+pl.excludedLength.toString()+'^', '^G'+pl.effectiveLength.toString()+'^']);
+      tot[1] += pl.length;
+      tot[2] += pl.excludedLength;
+      tot[3] += pl.effectiveLength;
     });
+
+    tot[2] = '^R' + tot[2];
+    tot[3] = '^G' + tot[3];
+
+    table.push(tot.map(x => `^+${x}^`));
 
     term.table(table, { hasBorder: false, contentHasMarkup: true, fit: true });
   } else if (argv.populate) {
