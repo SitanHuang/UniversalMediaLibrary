@@ -12,10 +12,13 @@ async function convert(umd, out, argv) {
   let opts = [
     '-i',
     umd.resolvedMaterial,
-    '-y',
+    argv.overwrite ? '-y' : '-n',
     '-map_metadata', '0', // copy all global metadata
     '-hide_banner', '-loglevel', 'fatal', '-nostats'
   ];
+
+  if (!argv.overwrite && fs.existsSync(out))
+    return true;
 
   if (argv.audio === false)
     opts.push('-an');

@@ -32,6 +32,12 @@ yargs
         decribe: 'Extension of converted media file',
         type: 'string',
         required: true
+      },
+      overwrite: {
+        decribe: 'Overwrite existing files',
+        type: 'boolean',
+        required: true,
+        default: false
       }
     },
     handler: (argv) => require('./handlers/convert')(yargs, argv)
