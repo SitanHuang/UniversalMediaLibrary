@@ -23,6 +23,7 @@ be converted into desired formats, such as audio-only files.
 
 ```bash
 # Installation
+npm install
 ln -s abs_path_to/index.js /usr/bin/uml
 
 # Create a library at current directory

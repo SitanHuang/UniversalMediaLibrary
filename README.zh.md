@@ -15,6 +15,7 @@
 
 ```bash
 # 安装
+npm install
 ln -s abs_path_to/index.js /usr/bin/uml
 
 # 在当前目录创建一个库
