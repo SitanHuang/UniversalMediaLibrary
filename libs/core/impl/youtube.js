@@ -35,7 +35,7 @@ class YouTubeAdapter extends Media {
           '--add-metadata',
           '--xattrs',
           '--no-warnings',
-          '--rm-cache-dir',
+          // '--rm-cache-dir',
           '--no-cache-dir',
           '-o',
           CONTEXT.path('media/' + material)

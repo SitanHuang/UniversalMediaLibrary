@@ -12,7 +12,7 @@ class YoutubePlaylistAdapter extends require('../playlist') {
           url, '--flat-playlist',
           '-j',
           '--no-warnings',
-          '--rm-cache-dir',
+          // '--rm-cache-dir',
           '--no-cache-dir'
         ]
       );
