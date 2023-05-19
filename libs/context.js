@@ -83,6 +83,10 @@ class UMLContext {
   }
 
   removeUMD(umd) {
+    let playlists = umd.playlists;
+    for (let name of playlists) {
+      this.getPlaylist(name).removeMedia(umd);
+    }
     delete this.umd[umd.uid];
   }
 

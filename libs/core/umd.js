@@ -1,4 +1,5 @@
 const fs = require('fs');
+const vm = require('vm');
 
 class UniversalMediaDescriptor extends Serializable {
   constructor(uid, title, author) {
@@ -22,6 +23,16 @@ class UniversalMediaDescriptor extends Serializable {
     this.materialized = null;
   }
 
+  exec_query(script) {
+    script = new vm.Script(script);
+    // let context = {};
+    // Object.assign(context, this);
+    // context.global = context;
+    let context = vm.createContext(this);
+
+    return script.runInContext(context);
+  }
+
   // 1. deletes material if excluded
   // 2. verifies if material exists
   // returns if deleted
@@ -39,6 +50,14 @@ class UniversalMediaDescriptor extends Serializable {
     }
     
     this.materialized = null;
+  }
+
+  get playlists() {
+    const uid = this.uid;
+    return Object.values(CONTEXT.playlists)
+            .filter(x => x?.name && Object.keys(x.mediaList).indexOf(uid) >= 0)
+            .map(x => x.name)
+            .sort();
   }
 
   get resolvedMaterial() {

@@ -3,6 +3,31 @@ const yargs = require('yargs')(process.argv.slice(2));
 yargs
   .scriptName("uml")
   .usage('$0 <cmd> [args]')
+  // ==================    umd     ==================
+  .command({
+    command: 'umd',
+    describe: 'Lists UMDs',
+    builder: {
+      remove: {
+        describe: 'Remove listed UMDs from the library (and all playlists)',
+        type: 'boolean'
+      },
+      query: {
+        describe: 'An inline javascript code evaluated under the context of each instance of' +
+                  'UniversalMediaDescriptor; returns true to select the UMD; ' +
+                  'available properties: uid, title, author, excluded, sources[], materialized, playlists[]',
+        type: 'string',
+        required: true,
+        default: 'true'
+      },
+      'set-exclude': {
+        describe: 'Set the selected UMDS as excluded/unexcluded',
+        type: 'boolean'
+      }
+    },
+    handler: (argv) => require('./handlers/umd')(yargs, argv)
+  })
+  .conflicts('remove', 'set-exclude')
   // ==================  convert   ==================
   .command({
     command: 'convert',

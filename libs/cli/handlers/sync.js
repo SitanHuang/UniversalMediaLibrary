@@ -1,78 +1,14 @@
 const TaskPool = require('../../core/taskpool');
 
-const Media = require('../../core/media');
-
 const term = require('terminal-kit').terminal;
 
 async function handle(yargs, argv) {
   term('Finding adapters for Universal Media Descriptors...\n');
 
-  let download = [];
-
-  let resolved = [];
-  let unresolved = [];
-  let excluded = [];
-
-  let deleted = [];
-
-  let durationTotal = 0;
-
   // sort alphabetically
-  let umids = Object.values(CONTEXT.umd).sort((a, b) => a?.title > b?.title ? 1 : -1);
+  let umds = Object.values(CONTEXT.umd).sort((a, b) => a?.title > b?.title ? 1 : -1);
 
-  for (let umd of umids) {
-    if (!umd?.uid) continue;
-
-    if (umd.verifyMaterial())
-      deleted.push(umd);
-
-    if (umd.excluded) {
-      excluded.push(umd);
-      continue;
-    }
-
-    let adapted;
-    for (const adapter of CONTEXT.MEDIA_ADAPTERS) {
-      let media = new Media(umd.uid).toType(adapter);
-      if (await media.search()) {
-        adapted = media;
-        break;
-      }
-    }
-
-    if (adapted) {
-      if (umd.materialized)
-        resolved.push(umd);
-      else {
-        download.push(adapted)
-        durationTotal += umd.duration || 120;
-      }
-    } else {
-      unresolved.push(umd);
-    }
-  }
-
-  let table = [];
-  table.push([['^+^G In Sync (' + resolved.length + ' Total):^', '']]);
-  for (let umd of resolved) {
-    table.push(['^G    ' + umd.title + '^', '^G' + umd.author + '^']);
-  }
-  table.push([['^+^- Excluded (' + excluded.length + ' Total):', '']]);
-  for (let umd of excluded) {
-    table.push(['^-    ' + umd.title + '^', '^-' + umd.author + '^']);
-  }
-  table.push([['^+^r Unresolved (' + unresolved.length + ' Total):^', '']]);
-  for (let umd of unresolved) {
-    table.push(['^r    ' + umd.title + '^', '^r' + umd.author + '^']);
-  }
-  table.push([['^+^R Deleted (' + deleted.length + ' Total):^', '']]);
-  for (let umd of deleted) {
-    table.push(['^R    ' + umd.title + '^', '^R' + umd.author + '^']);
-  }
-  table.push([[' To be downloaded (' + download.length + ' Total):^', '']]);
-  for (let adapted of download) {
-    table.push(['    ' + adapted.umd.title + '', '' + adapted.umd.author + '']);
-  }
+  let { download, table, durationTotal } = await require('../common').gen_umd_table(umds);
 
   term.table(table, { hasBorder: false, contentHasMarkup: true, fit: true });
 
@@ -80,7 +16,11 @@ async function handle(yargs, argv) {
     if (name === 'CTRL_C') { process.exit(1); }
   });
 
-  term('\nTransaction resolved. (~' + durationTotal + ' vid-sec in total)\n')
+  term('\nTransaction resolved. (~' + durationTotal + ' vid-sec in total)\n');
+
+  if (!download.length) {
+    process.exit();
+  }
 
   term('Is this ok [y|N]: ');
 
