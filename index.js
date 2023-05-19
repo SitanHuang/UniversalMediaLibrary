@@ -22,6 +22,10 @@ async function main() {
 if (CONTEXT.isUMLDirectory()) {
   main();
 } else {
+  argsParser.showHelp();
+
+  term('\n');
+
   console.error('Current directory is not a UML library.\n');
   console.log('Do you want to create one? [Y|n]');
 
