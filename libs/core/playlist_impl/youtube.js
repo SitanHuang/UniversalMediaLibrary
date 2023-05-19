@@ -34,12 +34,12 @@ class YoutubePlaylistAdapter extends require('../playlist') {
 
         umd.duration = vid.duration;
 
-        let source = `https://www.youtube.com/watch?v=${vid.url}`;
+        let source = `https://www.youtube.com/watch?v=${vid.id}`;
 
         if (umd.sources.indexOf(source) < 0)
-          umd.sources.unshift(`https://www.youtube.com/watch?v=${vid.url}`);
+          umd.sources.unshift(`https://www.youtube.com/watch?v=${vid.id}`);
 
-          this.setMedia(umd);
+        this.setMedia(umd);
         CONTEXT.setUMD(umd);
       }
 

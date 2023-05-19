@@ -67,7 +67,7 @@ async function handle(yargs, argv) {
       umd.verifyMaterial();
       if (!umd.materialized) {
         term.red(`UMD ^+${umd.title}^:^r (UID: ^+${umd.uid}^:^r) is not materialized!\n`);
-        process.exit(1);
+        continue;
       }
 
       total++;
