@@ -39,7 +39,7 @@ async function handle(yargs, argv) {
     }
 
     let spinner = await term.spinner();
-    term(' Populating playlist... \n');
+    term(' Populating playlist ').bold(argv.populate)('... \n');
 
     playlist = playlist.toType(require('../../core/playlist_impl/youtube'));
 
@@ -82,7 +82,7 @@ async function handle(yargs, argv) {
     CONTEXT.saveUMDs();
     CONTEXT.savePlaylists();
 
-    process.exit(1);
+    process.exit();
 
   } else {
     yargs.showHelp();
