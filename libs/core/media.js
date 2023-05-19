@@ -7,6 +7,10 @@ class Media extends Serializable {
     this.fname = null;
   }
 
+  get umd() {
+    return CONTEXT.getUMD(this.uid);
+  }
+
   // attempts to materialize Media object with implementation adapter
   // returns true/false
   async search() {

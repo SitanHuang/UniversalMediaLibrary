@@ -14,12 +14,14 @@ class UMLContext {
     this.umd = {};
     this.playlists = {};
 
+    this.MEDIA_ADAPTERS = [require('./core/impl/youtube')];
 
     this.media = [];
 
     this.config = {
       youtube: {
-        backend: 'youtube-dl'
+        backend: 'yt-dlp',
+        sourceFormat: 'mkv'
       }
     };
   }

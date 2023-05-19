@@ -16,7 +16,7 @@ async function handle(yargs, argv) {
       table.push([pl.name, pl.length, '^R'+pl.excludedLength.toString()+'^', '^G'+pl.effectiveLength.toString()+'^']);
     });
 
-    term.table(table, { hasBorder: false, contentHasMarkup: true });
+    term.table(table, { hasBorder: false, contentHasMarkup: true, fit: true });
   } else if (argv.populate) {
     // TODO: stub, provide other playlist populators than youtube
     let playlist = CONTEXT.getPlaylist(argv.populate);
@@ -37,7 +37,6 @@ async function handle(yargs, argv) {
     let oldLength = playlist.length;
 
     let umds = await playlist.populate(argv.query);
-    let excluded = 0;
 
     term("Playlist size: ").red(oldLength + '')(" UMD -> ").green(playlist.length + '')(" UMD\n");
     term("======= Please select if these new UMDs should be excluded =======\n");

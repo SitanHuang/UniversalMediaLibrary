@@ -3,6 +3,19 @@ const yargs = require('yargs')(process.argv.slice(2));
 yargs
   .scriptName("ulm-manager")
   .usage('$0 <cmd> [args]')
+  // ==================   sync    ==================
+  .command({
+    command: 'sync',
+    describe: 'Materialize all UMDs',
+    builder: {
+      maxthread: {
+        describe: 'Maximum concurrent backend instances',
+        type: 'number',
+        default: 24
+      }
+    },
+    handler: (argv) => require('./handlers/sync')(yargs, argv)
+  })
   // ================== playlists ==================
   .command({
     command: 'playlist',
