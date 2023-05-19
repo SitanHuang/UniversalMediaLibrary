@@ -39,7 +39,7 @@ async function handle(yargs, argv) {
     }
 
     let spinner = await term.spinner();
-    term(' Populating playlist... ');
+    term(' Populating playlist... \n');
 
     playlist = playlist.toType(require('../../core/playlist_impl/youtube'));
 
@@ -48,6 +48,12 @@ async function handle(yargs, argv) {
     let oldLength = playlist.length;
 
     let umds = await playlist.populate(argv.query);
+
+    if (!umds) {
+      term.red("Failed to populate playlist. Check if the playlist is set to public/unlisted.\n");
+
+      process.exit(1);
+    }
 
     term("Playlist size: ").red(oldLength + '')(" UMD -> ").green(playlist.length + '')(" UMD\n");
     term("======= Please select if these new UMDs should be excluded =======\n");
